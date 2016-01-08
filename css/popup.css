@@ -1,6 +1,32 @@
 /*****************************************
 ******* JavaScript Popup Prototype  ******
 *****************************************/
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+
+@keyframes displayPopup
+{
+    from
+    {
+        opacity: 0;
+    }
+    to
+    {
+        opacity: 1;
+    }
+}
+
+@keyframes hidePopup
+{
+    from
+    {
+        opacity: 1;
+    }
+    to
+    {
+        opacity: 0;
+    }
+}
+
 .overlay
 {
     position: fixed;
@@ -15,7 +41,7 @@
     margin: 0;
     padding: 0;
 
-    transform: translateZ(4px);
+    transform: translateZ(10px);
     animation-name: displayPopup;
     animation-duration: .35s;
     animation-timing-function: ease;
@@ -27,6 +53,11 @@
     animation-fill-mode: forwards;
     justify-content: center;
     align-items: flex-start;
+}
+
+.popup *
+{
+    font-family: font-family: Raleway, Helvetica, Arial, sans-serif;
 }
 
 .popup
@@ -41,8 +72,8 @@
     padding: 0;
 
     border-radius: 10px;
-    background: $back-light;
-    background: linear-gradient($back-dark 0%, $back-dark 15%, $back-light 15%, $back-light 100%);
+    background: #eee;
+    background: linear-gradient(#333 0%, #333 15%, #eee 15%, #eee 100%);
     box-shadow: 0 0 5px 1px rgba(0,0,0,.75);
 }
 
@@ -57,7 +88,7 @@
     margin: 0 0 10px;
     padding: 0;
 
-    background: $back;
+    background: #015e85;
 
     justify-content: center;
     align-items: center;
@@ -72,7 +103,7 @@
 
     margin: 10px 0;
 
-    color: $back-light;
+    color: #eee;
 }
 
 .popup .note
@@ -112,21 +143,34 @@
 .popup .buttons .button
 {
     font-size: 1.1em;
+    font-weight: 900;
+
+    display: inline-block;
 
     margin: 0 5px;
     padding: 5px 10px;
 
+    cursor: pointer;
+    transition: all .35s ease;
+    text-align: center;
     text-transform: uppercase;
 
-    color: $back-dark;
-    border: 1px solid $back-dark;
+    color: #333;
+    border: none;
+    border-radius: 7px;
     outline: none;
-    background: $back-light;
+    background: #d7d7d7;
+    box-shadow: 0 2px 3px rgba(0,0,0,.8);
 }
 
 .popup .buttons .button:active,
 .popup .buttons .button:hover
 {
-    color: $back-light;
-    background: $back-dark;
+    color: #eee;
+    background: #015e85;
+}
+
+.popup .buttons .button:active
+{
+    box-shadow: inset 1px 2px 4px rgba(0,0,0,.8);
 }
