@@ -1,106 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link type="text/css" rel="stylesheet" href="css/example.css" />
 	<link type="text/css" rel="stylesheet" href="css/popup.css" />
 	<title>Popup Example</title>
-	<style type="text/css">
-		@import url(https://fonts.googleapis.com/css?family=Raleway);
-
-		body {
-			background: #eee;
-			text-align: center;
-			width: 100%;
-			height: 100%;
-			font-family: Raleway, Helvetica, Arial, sans-serif;
-		}
-
-		section {
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			margin: auto;
-			width: 40%;
-			height: 30%;
-		}
-
-		h1
-		{
-		    font-size: 2rem;
-
-		    margin: 15px 0;
-		    padding: 0;
-
-		    text-align: center;
-
-		    color: #015e85;
-		}
-
-		h2
-		{
-		    font-size: 1.25rem;
-
-		    margin: 15px 0 10px;
-		    padding: 0;
-
-		    text-align: center;
-
-		    color: #222;
-		}
-
-		p
-		{
-		    font-size: 1rem;
-		    line-height: 1.5rem;
-
-		    margin: .8rem 0;
-		    padding: 0;
-
-		    letter-spacing: 1px;
-		    color: #222;
-		}
-
-		button
-		{
-		    font-size: 1.1em;
-		    font-weight: 900;
-
-		    display: block;
-
-		    margin: 10px auto;
-		    padding: 5px 10px;
-
-		    cursor: pointer;
-		    transition: all .35s ease;
-		    text-align: center;
-		    text-transform: uppercase;
-		    
-		    color: #eee;
-		    background: #015e85;
-
-		    border: 1px solid #333;
-		    border-radius: 7px;
-		    outline: none;
-		    box-shadow: 0 2px 3px rgba(0,0,0,.8);
-		}
-
-		button:active,
-		button:hover
-		{
-		    color: #333;
-		    background: #eee;
-		    box-shadow: inset 1px 2px 4px rgba(0,0,0,.8);
-		}
-	</style>
 </head>
 <body>
 
 	<section>
 		<h1>Custom jQuery Popup Object</h1>
-		<h2>Example One</h2>
+		<h2>Testing &amp; Example</h2>
 
-		<p>Click on the button below to open the popup</p>
+		<p>You can use the form below edit the configuration, and get a live out put of the JavaScript, then when your done press the button at the bottom and preview how your popup looks!</p>
+        <p>For obvious reasons the submit function of the popup buttons have been disabled on this page.</p>
+        <label>Title:</label>
+        <textarea class="title sm input">My First Popup</textarea>
+
+        <label>Message</label>
+        <textarea class="msg md input">I just created a <strong>custom</strong> javascript popup!</textarea>
+
+        <label>Buttons (comma seperated list):</label>
+        <textarea class="btn sm input">neat!</textarea>
+
+        <label>Button Config:</label>
+        <textarea class="btn lg input"></textarea>
+
+        <label>URL:</label>
+        <textarea class="url sm input">www.google.com</textarea>
+
+        <label>Method:</label>
+        <textarea class="method sm input">post</textarea>
+
+        <label>Class:</label>
+        <textarea class="class sm input">my-class</textarea>
+
+        <label>Reload</label>
+        <textarea class="reload sm input">false</textarea>
+
+        <label>JavaScript Preview:</label>
+        <div class="code"></div>
+
+		<h3>Click on the button below to open the popup</h3>
 		<button>Open</button>
 	</section>
 
@@ -108,18 +48,78 @@
 	<script type="text/javascript" src="js/popup.js"></script>
 	<script type="text/javascript">
 
-		var config = {
-			title: "My First Popup",
-			message: "I just created a custom javascript popup!",
-			buttons: ['neat!']
-		};
+    function displayCode() {
+        var code = "<i>var</i> <em>config</em> <a>=</a> {<br />";
 
-		var myPopup = new Popup(config);
+        if ( $('.title').val().length > 0 ) {
+            code += "<span>title: '<em>" + $('.title').val() + "</em>',</span>";
+        }
+        if ( $('.msg').val().length > 0 ) {
+            code += "<span>message: '<em>" + $('.msg').val() + "</em>',</span>";
+        }
+        if ( $('.btn').val().length > 0 ) {
+            code += "<span>buttons: ['<em>" + $('.btn').val().replace(/,\s*$/g, "").replace(/,\s*?\b/g, "</em>', '<em>") + "</em>'],</span>";
+        }
+        if ( $('.url').val().length > 0 ) {
+            code += "<span>url: '<em>" + $('.url').val() + "</em>',</span>";
+        }
+        if ( $('.method').val().length > 0 ) {
+            code += "<span>method: '<em>" + $('.method').val() + "</em>',</span>";
+        }
+        if ( $('.class').val().length > 0 ) {
+            code += "<span>class: '<em>" + $('.class').val() + "</em>',</span>";
+        }
+        if ( $('.reload').val().length > 0 ) {
+            code += "<span>reload: '<em>" + $('.reload').val() + "</em>',</span>";
+        }
 
-		$('button').click(function(e) {
-			e.preventDefault();
-			myPopup.open();
-		});
+        code += "};<br /><br />";
+        code += "<i>var</i> <em>myPopup</em> <a>= new</a> Popup(config);";
+
+        $('.code').html(code);
+    }
+
+    $('textarea.input').bind('input propertychange', function() {
+        displayCode();
+    });
+
+    displayCode();
+
+    $('button').click(function(event) {
+        event.preventDefault();
+
+        var config = {};
+
+        if ( $('.title').val().length > 0 ) {
+            config.title = $('.title').val();
+        }
+        if ( $('.msg').val().length > 0 ) {
+            config.message = $('.msg').val();
+        }
+        if ( $('.btn').val().length > 0 ) {
+            config.buttons = $('.btn').val().replace(/,\s*$/g, ",").split(",");
+        }
+        if ( $('.url').val().length > 0 ) {
+            config.url = $('.url').val();
+        }
+        if ( $('.method').val().length > 0 ) {
+            config.method = $('.method').val();
+        }
+        if ( $('.class').val().length > 0 ) {
+            config.class = $('.class').val();
+        }
+        if ( $('.reload').val().length === "true" ) {
+            config.reload = true;
+        }
+        var myPopup = new Popup(config);
+
+        myPopup.open();
+	});
+
+    $(document).on("submit", "form", function(event) {
+        event.preventDefault();
+        return false;
+    });
 
 	</script>
 </body>
