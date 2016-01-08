@@ -2,6 +2,8 @@
 
 This is a highly funcitonal JavaScript popup object. You can make as many named popups as you want, all with different data. Each popup can be opened and closed as is needed.  The popup can be used to simply display information, to force a page refresh, or to submit a form. jQuery is required for this to work.
 
+## Basic Setup
+
 To use the popup, you need to link to the style sheet in the head of the document:
 ```html
 	<link type="text/css" rel="stylesheet" href="css/popup.css" />
@@ -12,6 +14,8 @@ You also need to add the JavaScript:
 	<script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="js/popup.js"></script>
 ```
+
+## Configuration
 
 To configure the each popup, you need to pass it an object variable. This should be constructed like so (explination of each option is below) (not every flag is required):
 
@@ -37,7 +41,9 @@ var config = {
 };
 ```
 
-| Configuration Option | Required | Type | Function |
+## Configuration Explaination
+
+| Option | Required | Type | Function |
 | -------------------- | -------- | ---- | -------- |
 | title | yes | string | Text to be displayed on in the header section of the popup. |
 | message | yes | string | The main body of the popup.  It can include HTML if you want to specify paragraphs or special text |
@@ -48,6 +54,8 @@ var config = {
 | class | no | string | A class name that is attached to the overlay of the popup. Used to specify custom styles, or for targeting a specific popup with javascript. |
 | reload | no | boolean | If set to true, the page will refresh when the popup is closed. If this is set to true, the button action and url will be ignored. |
 
+
+## Create Popup
 
 To create your popup object you simply need to create a variable, call the constructor function, and pass it the configuration variable. This is an example of a very simple popup:
 
@@ -61,6 +69,8 @@ var config = {
 var myPopup = new Popup(config);
 ```
 
+## Popup Methods
+
 Each popup has an open and a close method that you can use to display the popup, and to remove it from the dom (clicking any of the buttons also calls the close method, so you don't have to do this separately):
 
 ```javascript
@@ -69,5 +79,3 @@ myPopup.open();
 //or
 
 myPopup.close();
-```
-
