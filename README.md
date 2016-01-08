@@ -1,6 +1,6 @@
 # Custom jQuery Popup Object
 
-## ***Checkout the example.html for an interactive and working example***
+***Checkout the example.html for an interactive and working example***
 
 This is a highly funcitonal JavaScript popup object. You can make as many named popups as you want, all with different data. Each popup can be opened and closed as is needed.  The popup can be used to simply display information, to force a page refresh, or to submit a form. jQuery is required for this to work. This popup requires a browser the supports flex, and does not work well on older versions of IE. Mobile Safari is supported.
 
