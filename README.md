@@ -68,10 +68,10 @@ var config = {
 
 var myPopup = new Popup(config);
 ```
-
 This will will create this popup:
 
 ![Popup Screenshot](/../screenshots/basic.PNG)
+
 
 ## Popup Methods
 
@@ -83,3 +83,4 @@ myPopup.open();
 //or
 
 myPopup.close();
+```
