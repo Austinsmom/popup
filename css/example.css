@@ -80,6 +80,12 @@ textarea
     padding: 0 5px;
 }
 
+input[type="text"] {
+    width: 100px;
+    display: inline-block;
+    margin: 5px 5px 5px 0;
+}
+
 textarea.sm
 {
     height: 20px;
@@ -173,6 +179,19 @@ label
     margin: 10px 0 0;
 
     text-align: left;
+}
+
+label.inline {
+    display: inline-block;
+}
+
+button.add {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: inline-block;
+    line-height: 18px;
+    padding: 0 0 2px 0;
 }
 
 button

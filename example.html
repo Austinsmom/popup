@@ -3,6 +3,7 @@
 <head>
     <link type="text/css" rel="stylesheet" href="css/example.css" />
 	<link type="text/css" rel="stylesheet" href="css/popup.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>Popup Example</title>
 </head>
 <body>
@@ -23,7 +24,10 @@
         <textarea class="btn sm input">neat!</textarea>
 
         <label>Button Config:</label>
-        <textarea class="btn lg input"></textarea>
+        <label class="inline">  Name <input class="config cfg0" value="submit" /></label>
+        <label class="inline">  Value <input class="config cfg0" value="true" /></label>
+        <button class="add">+</button>
+
 
         <label>URL:</label>
         <textarea class="url sm input">www.google.com</textarea>
@@ -35,13 +39,14 @@
         <textarea class="class sm input">my-class</textarea>
 
         <label>Reload</label>
-        <textarea class="reload sm input">false</textarea>
+        <label><input class="reload yes" type="radio" name="reload" value="true" /> Yes</label>
+        <label><input class="reload no" type="radio" name="reload" value="false" checked /> No</label>
 
         <label>JavaScript Preview:</label>
         <div class="code"></div>
 
 		<h3>Click on the button below to open the popup</h3>
-		<button>Open</button>
+		<button class="open">Open</button>
 	</section>
 
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -60,6 +65,14 @@
         if ( $('.btn').val().length > 0 ) {
             code += "<span>buttons: ['<em>" + $('.btn').val().replace(/,\s*$/g, "").replace(/,\s*?\b/g, "</em>', '<em>") + "</em>'],</span>";
         }
+        $('.config').each(function(){
+            var length = 0;
+            length = $(this).val().length
+            if (length > 0) {
+                
+            }
+        })
+
         if ( $('.url').val().length > 0 ) {
             code += "<span>url: '<em>" + $('.url').val() + "</em>',</span>";
         }
@@ -69,9 +82,11 @@
         if ( $('.class').val().length > 0 ) {
             code += "<span>class: '<em>" + $('.class').val() + "</em>',</span>";
         }
-        if ( $('.reload').val().length > 0 ) {
-            code += "<span>reload: '<em>" + $('.reload').val() + "</em>',</span>";
+        if ( $('.reload.yes').is(':checked') ) {
+            code += "<span>reload: '<em>true</em>',</span>";
         }
+
+        code = code.substring(0,code.lastIndexOf(",</span>")) + "</span>";
 
         code += "};<br /><br />";
         code += "<i>var</i> <em>myPopup</em> <a>= new</a> Popup(config);";
@@ -83,9 +98,13 @@
         displayCode();
     });
 
+    $('.reload').change(function() {
+        displayCode();
+    });
+
     displayCode();
 
-    $('button').click(function(event) {
+    $('button.open').click(function(event) {
         event.preventDefault();
 
         var config = {};
