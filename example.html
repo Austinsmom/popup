@@ -1,8 +1,413 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link type="text/css" rel="stylesheet" href="css/example.css" />
-	<link type="text/css" rel="stylesheet" href="css/popup.css" />
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Raleway);
+
+        body
+        {
+            font-family: Raleway, Helvetica, Arial, sans-serif;
+
+            width: 100%;
+            height: 100%;
+
+            background: #eee;
+        }
+
+        section
+        {
+            width: 550px;
+            max-width: 95%;
+            margin: 10px auto;
+        }
+
+        h1
+        {
+            font-size: 2rem;
+
+            margin: 15px 0;
+            padding: 0;
+
+            text-align: center;
+
+            color: #015e85;
+        }
+
+        h2
+        {
+            font-size: 1.25rem;
+
+            margin: 15px 0 10px;
+            padding: 0;
+
+            text-align: center;
+
+            color: #222;
+        }
+
+        h3
+        {
+            font-size: 1.05rem;
+
+            margin: 10px 0 0;
+            padding: 0;
+
+            text-align: center;
+
+            color: #222;
+        }
+
+        p
+        {
+            font-size: 1rem;
+            line-height: 1.5rem;
+
+            margin: .8rem 0;
+            padding: 0;
+
+            text-align: left;
+            letter-spacing: 1px;
+
+            color: #222;
+        }
+
+        textarea
+        {
+            line-height: 20px;
+
+            display: block;
+
+            box-sizing: border-box;
+            width: 100%;
+            height: 100px;
+            margin: 5px auto 15px;
+            padding: 0 5px;
+        }
+
+        input[type="text"] {
+            width: 100px;
+            display: inline-block;
+            margin: 5px 5px 5px 0;
+        }
+
+        textarea.sm
+        {
+            height: 20px;
+        }
+
+        textarea.md
+        {
+            height: 50px;
+        }
+
+        textarea.lg
+        {
+            height: 80px;
+        }
+
+        div.code
+        {
+            font-family: monospace;
+
+            position: relative;
+
+            display: block;
+
+            height: 300px;
+            margin: 5px auto 15px;
+            padding: 5px 10px;
+
+            white-space: pre-wrap;
+            text-indent: 0;
+            letter-spacing: normal;
+            word-spacing: normal;
+            text-transform: none;
+            word-wrap: break-word;
+            pointer-events: none;
+
+            color: #fff;
+            border: none;
+            background: #222;
+            text-shadow: none;
+
+            text-rendering: auto;
+        }
+
+        div.code i
+        {
+            color: #7f0;
+        }
+
+        div.code em
+        {
+            font-style: initial;
+
+            color: #ffa500;
+        }
+
+        div.code a,
+        div.code a:hover,
+        div.code a:active,
+        div.code a:visited
+        {
+            font-style: initial;
+            text-decoration: none;
+
+            color: #ffff00;
+        }
+
+        div.code span
+        {
+            position: relative;
+
+            display: block;
+
+            margin: 3px 0 3px 35px;
+
+            text-indent: -15px;
+        }
+
+        div.code span em
+        {
+            font-style: initial;
+
+            color: #0ad6ff;
+        }
+
+        label
+        {
+            font-weight: 900;
+
+            display: block;
+
+            margin: 10px 0 0;
+
+            text-align: left;
+        }
+
+        label.inline {
+            display: inline-block;
+        }
+
+        button.add {
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            line-height: 18px;
+            padding: 0 0 2px 0;
+        }
+
+        button
+        {
+            font-size: 1.1em;
+            font-weight: 900;
+
+            display: block;
+
+            margin: 10px auto;
+            padding: 5px 10px;
+
+            cursor: pointer;
+            transition: all .35s ease;
+            text-align: center;
+            text-transform: uppercase;
+
+            color: #eee;
+            border: 1px solid #333;
+            border-radius: 7px;
+            outline: none;
+            background: #015e85;
+            box-shadow: 0 2px 3px rgba(0,0,0,.8);
+        }
+
+        button:active,
+        button:hover
+        {
+            color: #333;
+            background: #eee;
+            box-shadow: inset 1px 2px 4px rgba(0,0,0,.8);
+        }
+
+    </style>
+    <style>
+        /*****************************************
+        ******* JavaScript Popup Prototype  ******
+        *****************************************/
+        @import url(https://fonts.googleapis.com/css?family=Raleway);
+
+        @keyframes displayPopup
+        {
+            from
+            {
+                opacity: 0;
+            }
+            to
+            {
+                opacity: 1;
+            }
+        }
+
+        @keyframes hidePopup
+        {
+            from
+            {
+                opacity: 1;
+            }
+            to
+            {
+                opacity: 0;
+            }
+        }
+
+        .overlay
+        {
+            position: fixed;
+            z-index: 10000;
+            top: 0;
+            left: 0;
+
+            display: flex;
+
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+
+            transform: translateZ(10px);
+            animation-name: displayPopup;
+            animation-duration: .35s;
+            animation-timing-function: ease;
+            animation-iteration-count: 1;
+
+            opacity: 0;
+            background: rgba(0,0,0,.9);
+
+            animation-fill-mode: forwards;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .popup *
+        {
+            font-family: font-family: Raleway, Helvetica, Arial, sans-serif;
+        }
+
+        .popup
+        {
+            position: relative;
+
+            overflow: hidden;
+
+            width: 90%;
+            max-width: 400px;
+            margin: auto;
+            padding: 0;
+
+            border-radius: 10px;
+            background: #eee;
+            background: linear-gradient(#333 0%, #333 15%, #eee 15%, #eee 100%);
+            box-shadow: 0 0 5px 1px rgba(0,0,0,.75);
+        }
+
+        .popup .titleBar
+        {
+            position: relative;
+
+            display: flex;
+
+            width: 100%;
+            height: auto;
+            margin: 0 0 10px;
+            padding: 0;
+
+            background: #015e85;
+
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup .titleBar span
+        {
+            font-size: 1.5em;
+            font-weight: 900;
+
+            display: block;
+
+            margin: 10px 0;
+
+            color: #eee;
+        }
+
+        .popup .note
+        {
+            display: block;
+
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .popup .note span
+        {
+            display: block;
+
+            text-align: left;
+        }
+
+        .popup .buttons
+        {
+            position: relative;
+
+            display: flex;
+
+            width: 100%;
+            margin: 10px 0;
+
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup .buttons form
+        {
+            margin: 0;
+            padding: 0;
+        }
+
+        .popup .buttons .button
+        {
+            font-size: 1.1em;
+            font-weight: 900;
+
+            display: inline-block;
+
+            margin: 0 5px;
+            padding: 5px 10px;
+
+            cursor: pointer;
+            transition: all .35s ease;
+            text-align: center;
+            text-transform: uppercase;
+
+            color: #333;
+            border: none;
+            border-radius: 7px;
+            outline: none;
+            background: #d7d7d7;
+            box-shadow: 0 2px 3px rgba(0,0,0,.8);
+        }
+
+        .popup .buttons .button:active,
+        .popup .buttons .button:hover
+        {
+            color: #eee;
+            background: #015e85;
+        }
+
+        .popup .buttons .button:active
+        {
+            box-shadow: inset 1px 2px 4px rgba(0,0,0,.8);
+        }
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>Popup Example</title>
 </head>
@@ -15,13 +420,13 @@
 		<p>You can use the form below edit the configuration, and get a live out put of the JavaScript, then when your done press the button at the bottom and preview how your popup looks!</p>
         <p>For obvious reasons the submit function of the popup buttons have been disabled on this page.</p>
         <label>Title:</label>
-        <textarea class="title sm input">My First Popup</textarea>
+        <textarea class="title sm input"></textarea>
 
         <label>Message</label>
-        <textarea class="msg md input">I just created a <strong>custom</strong> javascript popup!</textarea>
+        <textarea class="msg md input"></textarea>
 
         <label>Buttons (comma seperated list):</label>
-        <textarea class="btn sm input">neat!</textarea>
+        <textarea class="btn sm input"></textarea>
 
         <label>Button Config:</label>
         <label class="inline">  Name <input class="config cfg0" value="submit" /></label>
@@ -30,13 +435,13 @@
 
 
         <label>URL:</label>
-        <textarea class="url sm input">www.google.com</textarea>
+        <textarea class="url sm input"></textarea>
 
         <label>Method:</label>
-        <textarea class="method sm input">post</textarea>
+        <textarea class="method sm input"></textarea>
 
         <label>Class:</label>
-        <textarea class="class sm input">my-class</textarea>
+        <textarea class="class sm input"></textarea>
 
         <label>Reload</label>
         <label><input class="reload yes" type="radio" name="reload" value="true" /> Yes</label>
@@ -50,43 +455,173 @@
 	</section>
 
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript" src="js/popup.js"></script>
+	<script type="text/javascript">
+        /*****************************************
+        ******* JavaScript Popup Prototype  ******
+        *****************************************/
+
+        function Popup(config) {
+            this.title = config.title;
+            this.message = config.message;
+            this.buttons = config.buttons;
+            this.buttonActn = config.buttonActn;
+            this.url = config.url;
+            this.method = config.method;
+            this.class = config.class;
+            this.reload = config.reload;
+
+            this.initDefaults();
+
+            this.me = this.makeHTML();
+        }
+
+        Popup.prototype.initDefaults = function () {
+            if (this.title === undefined) { this.title = "Popup"; }
+            if (this.message === undefined) { this.message = "The message was not supplied."; }
+            if (this.buttons === undefined) { this.buttons = ['ok']; }
+            if (this.method === undefined) { this.method = 'get'; }
+            if (this.url === undefined) { this.url = false; }
+            if (this.reload === undefined) { this.reload = false; }
+        };
+
+        Popup.prototype.makeHTML = function () {
+            var html = $('<div class="overlay"></div>'),
+                popup = $('<div id="popup" class="popup"></div>'),
+                titlebar = $('<div class="titleBar"><span>' + this.title + '</span></div>'),
+                note = $('<div class="note"><span>' + this.message + '</span></div>');
+
+            if (this.class) {
+                html.addClass(this.class);
+            }
+
+            popup.prepend(titlebar).append(note).append(this.makeBtns());
+            html.append(popup);
+
+            return html;
+        };
+
+        Popup.prototype.makeBtns = function () {
+            var buttons = $('<div class="buttons"></div>'),
+                form,
+                button,
+                input;
+
+            for (var i = 0; i < this.buttons.length; i++) {
+
+                form = $('<form></form>');
+                button = $('<span class="button">' + this.buttons[i] + '</span>');
+
+                if (this.buttonActn) {
+                    for (var x = 0; x < this.buttonActn[i].length; x++) {
+                        input = $('<input type="hidden" name="' + this.buttonActn[i][x].name + '" value="' + this.buttonActn[i][x].value + '" />');
+                        form.append(input);
+                    }
+                }
+
+                form.append(button);
+                buttons.append(form);
+            }
+            return buttons;
+        };
+
+        Popup.prototype.bindButtons = function () {
+            var thisPopup = this;
+
+            this.me.find('span.button').each(function () {
+                $(this).bind('click', function (event) {
+                    event.preventDefault();
+                    var form = $(event.target).parents('form');
+                    thisPopup.close(form);
+                });
+            });
+        };
+
+        Popup.prototype.open = function () {
+            this.bindButtons();
+            $('body').prepend(this.me);
+        };
+
+        Popup.prototype.close = function (form) {
+            var thisPopup = this;
+
+            this.me.css('animation-name', 'hidePopup');
+
+            setTimeout(function () {
+                thisPopup.me.remove();
+                thisPopup.me.css('animation-name', '');
+
+                if (thisPopup.reload) {
+                    window.location.href = window.location.href;
+                } else if (thisPopup.url) {
+                    var data = form.serialize(),
+                        method = thisPopup.method,
+                        url = thisPopup.url;
+                    $.ajax({
+                        data: data,
+                        method: method,
+                        url: url,
+                        cache: false,
+                        success: function () {
+                            window.location.href = window.location.href;
+                        }
+                    });
+                }
+            }, 400);
+        };
+
+
+    </script>
 	<script type="text/javascript">
 
+    //Compile text input into JS object for preview
     function displayCode() {
+        var x = 0;
+        var html;
+
         var code = "<i>var</i> <em>config</em> <a>=</a> {<br />";
 
         if ( $('.title').val().length > 0 ) {
-            code += "<span>title: '<em>" + $('.title').val() + "</em>',</span>";
+            html = $("<div>").text($('.title').val()).html();
+            code += "<span>title: '<em>" + html + "</em>',</span>";
+            x++;
         }
         if ( $('.msg').val().length > 0 ) {
-            code += "<span>message: '<em>" + $('.msg').val() + "</em>',</span>";
+            html = $("<div>").text($('.msg').val()).html();
+            code += "<span>message: '<em>" + html + "</em>',</span>";
+            x++;
         }
         if ( $('.btn').val().length > 0 ) {
             code += "<span>buttons: ['<em>" + $('.btn').val().replace(/,\s*$/g, "").replace(/,\s*?\b/g, "</em>', '<em>") + "</em>'],</span>";
+            x++;
         }
         $('.config').each(function(){
             var length = 0;
             length = $(this).val().length
             if (length > 0) {
-                
+
             }
         })
 
         if ( $('.url').val().length > 0 ) {
             code += "<span>url: '<em>" + $('.url').val() + "</em>',</span>";
+            x++;
         }
         if ( $('.method').val().length > 0 ) {
             code += "<span>method: '<em>" + $('.method').val() + "</em>',</span>";
+            x++;
         }
         if ( $('.class').val().length > 0 ) {
             code += "<span>class: '<em>" + $('.class').val() + "</em>',</span>";
+            x++;
         }
         if ( $('.reload.yes').is(':checked') ) {
             code += "<span>reload: '<em>true</em>',</span>";
+            x++;
         }
 
-        code = code.substring(0,code.lastIndexOf(",</span>")) + "</span>";
+        if ( x > 0 ) {
+            code = code.substring(0,code.lastIndexOf(",</span>")) + "</span>";
+        }
 
         code += "};<br /><br />";
         code += "<i>var</i> <em>myPopup</em> <a>= new</a> Popup(config);";
@@ -94,6 +629,7 @@
         $('.code').html(code);
     }
 
+    //Bind display code function to changing input events
     $('textarea.input').bind('input propertychange', function() {
         displayCode();
     });
@@ -102,8 +638,11 @@
         displayCode();
     });
 
+    //Initial code preview
     displayCode();
 
+
+    //Create popup on button click based on user input
     $('button.open').click(function(event) {
         event.preventDefault();
 
@@ -135,11 +674,12 @@
         myPopup.open();
 	});
 
-    $(document).on("submit", "form", function(event) {
+    //Prevent button forms from submitting
+    $(window).on("submit", "form", function(event) {
         event.preventDefault();
+        event.stopPropagation();
         return false;
     });
-
 	</script>
 </body>
 </html>
