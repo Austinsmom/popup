@@ -73,7 +73,7 @@
 
     border-radius: 10px;
     background: #eee;
-    background: linear-gradient(#333 0%, #333 15%, #eee 15%, #eee 100%);
+    background: linear-gradient(#333 0%, #333 5%, #eee 5%, #eee 100%);
     box-shadow: 0 0 5px 1px rgba(0,0,0,.75);
 }
 

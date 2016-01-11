@@ -113,7 +113,7 @@
 
             display: block;
 
-            height: 300px;
+            height: 550px;
             margin: 5px auto 15px;
             padding: 5px 10px;
 
@@ -164,8 +164,19 @@
             display: block;
 
             margin: 3px 0 3px 35px;
+        }
 
+        div.code span.hang
+        {
             text-indent: -15px;
+        }
+        div.code div {
+            margin-left: 40px;
+            text-indent: 0;
+        }
+        div.code div div {
+            margin-left: 45px;
+            text-indent: 0;
         }
 
         div.code span em
@@ -188,6 +199,12 @@
 
         label.inline {
             display: inline-block;
+        }
+
+        div label 
+        {
+            display: inline-block;
+            margin-right: 7px;
         }
 
         button.add {
@@ -229,7 +246,6 @@
             background: #eee;
             box-shadow: inset 1px 2px 4px rgba(0,0,0,.8);
         }
-
     </style>
     <style>
         /*****************************************
@@ -307,7 +323,7 @@
 
             border-radius: 10px;
             background: #eee;
-            background: linear-gradient(#333 0%, #333 15%, #eee 15%, #eee 100%);
+            background: linear-gradient(#333 0%, #333 5%, #eee 5%, #eee 100%);
             box-shadow: 0 0 5px 1px rgba(0,0,0,.75);
         }
 
@@ -419,6 +435,7 @@
 		<h2>Testing &amp; Example</h2>
 
 		<p>You can use the form below edit the configuration, and get a rendered preview of the JavaScript necessary to create a popup with your options, then when you're, done press the open button at the bottom of the page and preview how the popup looks!</p>
+        <p>This will create the JavaScript config object for each of the attributes you provide, however the test popup will only include 'Title', 'Message', 'Buttons', and 'Class'. The attributes for posting or reloading are not created for this example. 
         <label>Title:</label>
         <textarea class="title sm input"></textarea>
 
@@ -428,10 +445,14 @@
         <label>Buttons (comma seperated list):</label>
         <textarea class="btn sm input"></textarea>
 
-        <label>Button Config:</label>
-        <label class="inline">  Name <input class="config cfg0" value="submit" /></label>
-        <label class="inline">  Value <input class="config cfg0" value="true" /></label>
-        <button class="add">+</button>
+        <div>
+            <label>Button Config:</label>
+            <button class="add">+</button>
+        </div>
+        <div class="buttonActn">
+            <label class="inline">  Name <input class="config cfg0" value="" /></label>
+            <label class="inline">  Value <input class="config cfg0" value="" /></label>
+        </div>
 
 
         <label>URL:</label>
@@ -570,8 +591,6 @@
                 }
             }, 400);
         };
-
-
     </script>
 	<script type="text/javascript">
 
@@ -587,35 +606,62 @@
             code += "<span>title: '<em>" + html + "</em>',</span>";
             x++;
         }
+
         if ( $('.msg').val().length > 0 ) {
             html = $("<div>").text($('.msg').val()).html();
             code += "<span>message: '<em>" + html + "</em>',</span>";
             x++;
         }
+
         if ( $('.btn').val().length > 0 ) {
             code += "<span>buttons: ['<em>" + $('.btn').val().replace(/,\s*$/g, "").replace(/,\s*?\b/g, "</em>', '<em>") + "</em>'],</span>";
             x++;
         }
-        $('.config').each(function(){
-            var length = 0;
-            length = $(this).val().length
-            if (length > 0) {
 
+        var chrCount = 0;
+        $('.config').each(function(){
+            chrCount += $(this).val().length;
+        });
+
+        if (chrCount > 0) {
+            var total = $('.config').length;
+            var count = total/2;
+            code += "<span>buttonActn: [";
+
+            for (var i=0; i < count; i++) {
+                var attribute = "name";
+                var comma = ",";
+                code += "<div>[{";
+                $('.cfg' + i).each(function(){ 
+                    code += "<div>" + attribute + ": '<em>" +  $(this).val() + "</em>'" + comma + "</div>";
+                    attribute = "value";
+                    comma = "";
+                });
+                if ( (count - i) > 1) {
+                    code += "}],</div>";
+                }
+                else {
+                    code += "}]</div>";
+                }
             }
-        })
+            code += "],</span>";
+        }
 
         if ( $('.url').val().length > 0 ) {
             code += "<span>url: '<em>" + $('.url').val() + "</em>',</span>";
             x++;
         }
+
         if ( $('.method').val().length > 0 ) {
             code += "<span>method: '<em>" + $('.method').val() + "</em>',</span>";
             x++;
         }
+
         if ( $('.class').val().length > 0 ) {
             code += "<span>class: '<em>" + $('.class').val() + "</em>',</span>";
             x++;
         }
+
         if ( $('.reload.yes').is(':checked') ) {
             code += "<span>reload: '<em>true</em>',</span>";
             x++;
@@ -640,9 +686,33 @@
         displayCode();
     });
 
+    $(document).on('keyup keypress change', '.config', function() {
+        displayCode();
+    });
+
     //Initial code preview
     displayCode();
 
+    $('button.add').click(function() {
+        var nextIndex = ($('.config').length)/2;
+        var border = $('<hr />');
+        var label1 = $('<label class="inline" />');
+        var label2 = $('<label class="inline" />');
+        var input1 = $('<input class="config" value="" />');
+        var input2 = $('<input class="config" value="" />');
+
+        label1.html("Name ");
+        label2.html("&nbsp;Value ");
+
+        input1.addClass('cfg' + nextIndex);
+        input2.addClass('cfg' + nextIndex);
+
+        label1.append(input1);
+        label2.append(input2);
+
+        $('div.buttonActn').append(label1);
+        $('div.buttonActn').append(label2);
+    });
 
     //Create popup on button click based on user input
     $('button.open').click(function(event) {
@@ -653,24 +723,19 @@
         if ( $('.title').val().length > 0 ) {
             config.title = $('.title').val();
         }
+
         if ( $('.msg').val().length > 0 ) {
             config.message = $('.msg').val();
         }
+
         if ( $('.btn').val().length > 0 ) {
             config.buttons = $('.btn').val().replace(/,\s*$/g, ",").split(",");
         }
-        if ( $('.url').val().length > 0 ) {
-            config.url = $('.url').val();
-        }
-        if ( $('.method').val().length > 0 ) {
-            config.method = $('.method').val();
-        }
+
         if ( $('.class').val().length > 0 ) {
             config.class = $('.class').val();
         }
-        if ( $('.reload').val().length === "true" ) {
-            config.reload = true;
-        }
+
         var myPopup = new Popup(config);
 
         myPopup.open();
