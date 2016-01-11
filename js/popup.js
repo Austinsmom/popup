@@ -79,8 +79,10 @@ Popup.prototype.bindButtons = function () {
 };
 
 Popup.prototype.open = function () {
-	this.bindButtons();
-	$('body').prepend(this.me);
+	if ( !$('div.overlay').length ) {
+		this.bindButtons();
+		$('body').prepend(this.me);
+	}
 };
 
 Popup.prototype.close = function (form) {
